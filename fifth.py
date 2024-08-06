@@ -14,47 +14,56 @@ def check_win(M): # Подсчёт очков
     for each in win_cord:
         if M[each[0]] == M[each[1]] == M[each[2]]:
             return M[each[0]]
-        return False
+    return False
 
 
-def player_choise(M):
-    count = 1
-    while check_win(M) == False:
-        if count % 2 != 0:
-            print("Ход игрока - Х")
-            count += 1
-            c = int(input())
-            if M[c-1] != "X" and M[c-1] != "O":
-                M[c - 1] = "X"
-                draw(M)
-            else:
-                while M[c-1] == "X" or M[c-1] == "O":
-                    print("Игрок Х, эта клетка занята. Попробуй другую: ")
-                    c = int(input())
-                else:
-                    M[c - 1] = "X"
-                    draw(M)
+def player_choise(M, token):
+    valid = False
+    while not valid:
+        print(f"Ход игрока - {token}")
+        c = int(input())
+        if str(M[c - 1]) not in "XO":
+            M[c - 1] = token
+            valid = True
         else:
-            print("Ход игрока - O")
-            count += 1
-            c = int(input())
-            if M[c-1] != "X" and M[c-1] != "O":
-                M[c-1] = "O"
-                draw(M)
-            else:
-                while M[c - 1] == "X" or M[c - 1] == "O":
-                    print("Игрок O, эта клетка занята. Попробуй другую: ")
-                    c = int(input())
-                else:
-                    M[c - 1] = "O"
-                    draw(M)
+            while str(M[c - 1]) in "XO":
+                print("Игрок Х, эта клетка занята. Попробуй другую: ")
+                c = int(input())
+                M[c - 1] = token
+
+
+
+def Main(M):
+    count = 1
+    win = False
+    while not win:
+        draw(M)
+        if count % 2 != 0:
+            player_choise(M, "X")
+        else:
+            player_choise(M, "O")
+        count += 1
+
+        tmp = check_win(M)
+        if tmp:
+            print(tmp, "выиграл!")
+            win = True
+            break
+        if count == 9:
+            print("Ничья!")
+            break
+    draw(M)
+
+
+Main(M)
 
 
 
 
 
-draw(M)
-player_choise(M)
+
+
+
 
 
 
